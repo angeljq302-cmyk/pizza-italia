@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pizza Italia | Sabor que se comparte</title>
+  <style>
+    :root{--red:#b5120d;--red2:#d51d18;--gold:#ffc83d;--cream:#fff0dc;--ink:#171313}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:#fff}
+    button{font:inherit;cursor:pointer}
+    .topbar{min-height:94px;background:linear-gradient(100deg,#850b08,#b5120d 55%,#8f0b08);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:12px 4.2%;gap:24px;position:sticky;top:0;z-index:10;box-shadow:0 3px 12px #0002}
+    .brand{display:flex;align-items:center;gap:12px;min-width:270px}
+    .brand-icon{font-size:58px;line-height:1;filter:drop-shadow(0 2px 1px #5b160d)}
+    .brand-name{font-family:Georgia,serif;font-style:italic;font-weight:bold;font-size:clamp(25px,3vw,40px);line-height:1}
+    .tagline{font-family:Georgia,serif;font-style:italic;text-align:center;font-size:15px;margin-top:4px}
+    nav{display:flex;align-items:center;gap:clamp(15px,3vw,44px)}
+    nav a{color:#fff;text-decoration:none;font-size:17px;white-space:nowrap}
+    nav a:hover{color:var(--gold)}
+    .nav-pill{background:#fff;color:#161616;padding:13px 26px;border-radius:28px;font-weight:bold}
+    .top-actions{display:flex;align-items:center;gap:24px;font-size:30px}
+    .cart-icon{position:relative;background:none;border:0;color:#fff;font-size:31px}
+    .cart-count{position:absolute;top:-8px;right:-12px;background:#f13b32;color:#fff;border-radius:50%;font-size:13px;width:25px;height:25px;display:grid;place-items:center;font-weight:bold}
+    .hero{min-height:305px;background:linear-gradient(90deg,rgba(0,0,0,.84),rgba(0,0,0,.18)),url('https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1800&q=85') center 52%/cover;display:flex;align-items:center;color:white;padding:42px 8%}
+    .hero-copy{max-width:530px}
+    .hero h1{font-size:clamp(38px,5vw,62px);line-height:1.02;font-style:italic;margin:0 0 12px;font-weight:800}
+    .hero h1 span{color:var(--gold)}
+    .hero p{font-size:22px;margin:0 0 20px}
+    .primary{border:0;background:linear-gradient(100deg,#df211b,#b50e09);color:#fff;padding:14px 32px;border-radius:30px;font-weight:bold;font-size:18px;box-shadow:0 3px 8px #0002}
+    .primary:hover,.add:hover{filter:brightness(1.08);transform:translateY(-1px)}
+    .shop{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:18px;padding:22px 2.5% 28px;max-width:1600px;margin:auto}
+    .menu-heading{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 15px}
+    .menu-heading h2{font-size:29px;margin:0;white-space:nowrap}
+    .pizza-mark{font-size:36px}
+    .heading-line{height:1px;background:#b9aaa2;flex:1;min-width:30px}
+    .filters{display:flex;gap:8px}
+    .filter{border:1px solid #ddd;background:#fff;padding:9px 17px;border-radius:22px}
+    .filter.active{background:var(--red);color:#fff;border-color:var(--red)}
+    .products{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+    .product{border:1px solid #e6e1de;border-radius:17px;padding:12px;background:#fff;box-shadow:0 2px 8px #00000008;display:flex;flex-direction:column;min-width:0}
+    .product img{width:100%;height:175px;object-fit:cover;border-radius:10px;background:#eee}
+    .product h3{font-size:19px;margin:13px 4px 6px}
+    .product p{font-size:14px;line-height:1.35;margin:0 4px 12px;min-height:37px}
+    .price{font-size:21px;font-weight:800;margin:0 4px 10px}
+    .add{border:0;background:linear-gradient(100deg,#d91d17,#b50e09);color:#fff;border-radius:14px;padding:12px 8px;font-weight:bold;margin-top:auto;transition:.15s}
+    .cart{border:1px solid #e1ddda;border-radius:17px;padding:20px 22px;align-self:start;box-shadow:0 2px 8px #00000008;position:sticky;top:112px}
+    .cart h2{font-size:26px;margin:0 0 15px;border-bottom:1px solid #ddd;padding-bottom:12px}
+    .cart-row{display:grid;grid-template-columns:75px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid #e6e1de}
+    .cart-row img{width:75px;height:75px;object-fit:cover;border-radius:10px}
+    .cart-row strong{display:block;margin:4px 0 7px}
+    .cart-row small{font-size:15px}
+    .quantity{display:flex;align-items:center;gap:12px;margin-top:8px}
+    .quantity button{border:1px solid #ddd;background:#fafafa;border-radius:50%;width:25px;height:25px}
+    .remove{border:0;background:none;color:#555;font-size:19px;margin-left:auto}
+    .subtotal{display:flex;justify-content:space-between;font-size:19px;font-weight:bold;margin:18px 0}
+    .subtotal span:last-child{color:var(--red)}
+    .checkout{width:100%;border:0;border-radius:14px;background:#bd100b;color:#fff;padding:14px;font-weight:bold;font-size:17px}
+    .empty{color:#777;text-align:center;padding:18px 0}
+    .benefits{background:linear-gradient(90deg,#ffedd8,#fff5e9,#ffedd8);display:grid;grid-template-columns:repeat(4,1fr);padding:22px 4%;gap:14px}
+    .benefit{display:flex;align-items:center;justify-content:center;gap:14px;border-right:2px solid #29211d;padding:6px 12px}
+    .benefit:last-child{border:0}
+    .benefit .emoji{font-size:42px}
+    .benefit strong{display:block;font-size:18px}
+    .benefit small{display:block;margin-top:4px;font-size:14px}
+    footer{background:#2a1714;color:#fff;text-align:center;padding:20px;font-size:14px}
+    .notice{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#201b19;color:white;padding:12px 20px;border-radius:30px;opacity:0;pointer-events:none;transition:.25s;z-index:20}
+    .notice.show{opacity:1}
+    @media(max-width:1050px){.topbar{flex-wrap:wrap}.brand{min-width:auto}nav{order:3;width:100%;justify-content:center;flex-wrap:wrap}.shop{grid-template-columns:1fr}.cart{position:static}.products{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:600px){.topbar{padding:12px 4%}.brand-icon{font-size:42px}.brand-name{font-size:27px}.top-actions{font-size:25px}nav{gap:13px}nav a{font-size:14px}.nav-pill{padding:9px 15px}.hero{min-height:280px;padding:30px 6%}.hero p{font-size:17px}.shop{padding:18px 4%}.menu-heading h2{font-size:24px}.filters{width:100%;overflow:auto}.filter{white-space:nowrap}.products{grid-template-columns:1fr 1fr;gap:9px}.product{padding:8px}.product img{height:125px}.product h3{font-size:16px}.product p{font-size:12px;min-height:48px}.price{font-size:18px}.add{font-size:13px}.benefits{grid-template-columns:1fr 1fr}.benefit{border-right:0;justify-content:flex-start}.benefit .emoji{font-size:32px}.benefit strong{font-size:14px}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><div class="brand-icon">🍕</div><div><div class="brand-name">Pizza Italia</div><div class="tagline">Sabor que se comparte</div></div></div>
+    <nav>
+      <a class="nav-pill" href="#inicio">Inicio</a><a href="#menu">Menú</a><a href="#promociones">Promociones</a><a href="#nosotros">Nosotros</a><a href="#contacto">Contacto</a>
+    </nav>
+    <div class="top-actions"><span aria-hidden="true">⌕</span><button class="cart-icon" onclick="document.querySelector('#carrito').scrollIntoView({behavior:'smooth'})" aria-label="Ver carrito">🛒<span class="cart-count" id="cartCount">0</span></button></div>
+  </header>
+
+  <section class="hero" id="inicio">
+    <div class="hero-copy"><h1>La mejor pizza<br><span>en Mérida</span></h1><p>Pedido rápido • Ingredientes frescos</p><button class="primary" onclick="document.querySelector('#menu').scrollIntoView({behavior:'smooth'})">Comprar ahora&nbsp; →</button></div>
+  </section>
+
+  <main class="shop" id="menu">
+    <section>
+      <div class="menu-heading"><span class="pizza-mark">🍕</span><h2>Nuestro Menú</h2><div class="heading-line"></div>
+        <div class="filters"><button class="filter active" data-filter="Todas">Todas</button><button class="filter" data-filter="Pizzas">Pizzas</button><button class="filter" data-filter="Extras">Extras</button><button class="filter" data-filter="Bebidas">Bebidas</button></div>
+      </div>
+      <div class="products" id="products">
+        <article class="product" data-category="Pizzas" data-name="Pizza Pepperoni" data-price="179" data-image="https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=700&q=85">
+          <img src="https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=700&q=85" alt="Pizza de pepperoni"><h3>Pizza Pepperoni</h3><p>Salsa de tomate, queso y pepperoni</p><div class="price">$179 MXN</div><button class="add">🛒 Agregar al carrito</button>
+        </article>
+        <article class="product" data-category="Pizzas" data-name="Pizza Hawaiana" data-price="169" data-image="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=700&q=85">
+          <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=700&q=85" alt="Pizza hawaiana"><h3>Pizza Hawaiana</h3><p>Jamón, piña y queso</p><div class="price">$169 MXN</div><button class="add">🛒 Agregar al carrito</button>
+        </article>
+        <article class="product" data-category="Pizzas" data-name="Pizza Vegetariana" data-price="159" data-image="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?auto=format&fit=crop&w=700&q=85">
+          <img src="https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?auto=format&fit=crop&w=700&q=85" alt="Pizza vegetariana"><h3>Pizza Vegetariana</h3><p>Champiñones, pimiento y queso</p><div class="price">$159 MXN</div><button class="add">🛒 Agregar al carrito</button>
+        </article>
+        <article class="product" data-category="Bebidas" data-name="Refresco 600 ml" data-price="25" data-image="https://images.unsplash.com/photo-1629203851122-3726ecdf080e?auto=format&fit=crop&w=700&q=85">
+          <img src="https://images.unsplash.com/photo-1629203851122-3726ecdf080e?auto=format&fit=crop&w=700&q=85" alt="Refresco"><h3>Refresco 600 ml</h3><p>Coca-Cola</p><div class="price">$25 MXN</div><button class="add">🛒 Agregar al carrito</button>
+        </article>
+        <article class="product" data-category="Extras" data-name="Pan de ajo" data-price="49" data-image="https://images.unsplash.com/photo-1619531040576-f9416740661b?auto=format&fit=crop&w=700&q=85">
+          <img src="https://images.unsplash.com/photo-1619531040576-f9416740661b?auto=format&fit=crop&w=700&q=85" alt="Pan de ajo"><h3>Pan de ajo</h3><p>Pan horneado con ajo y mantequilla</p><div class="price">$49 MXN</div><button class="add">🛒 Agregar al carrito</button>
+        </article>
+        <article class="product" data-category="Extras" data-name="Alitas BBQ" data-price="89" data-image="https://images.unsplash.com/photo-1527477396000-e27163b481c2?auto=format&fit=crop&w=700&q=85">
+          <img src="https://images.unsplash.com/photo-1527477396000-e27163b481c2?auto=format&fit=crop&w=700&q=85" alt="Alitas BBQ"><h3>Alitas BBQ</h3><p>Alitas bañadas en salsa BBQ</p><div class="price">$89 MXN</div><button class="add">🛒 Agregar al carrito</button>
+        </article>
+      </div>
+    </section>
+
+    <aside class="cart" id="carrito">
+      <h2>🛒 Tu carrito</h2><div id="cartItems"><div class="empty">Tu carrito está vacío.</div></div>
+      <div class="subtotal"><span>Subtotal:</span><span id="subtotal">$0 MXN</span></div>
+      <button class="checkout" id="checkout">▣ Finalizar compra</button>
+    </aside>
+  </main>
+
+  <section class="benefits" id="promociones">
+    <div class="benefit"><span class="emoji">🛵</span><div><strong>Envío a domicilio</strong><small>Rápido y seguro</small></div></div>
+    <div class="benefit"><span class="emoji">🛡️</span><div><strong>Pagos seguros</strong><small>Tu compra protegida</small></div></div>
+    <div class="benefit"><span class="emoji">🍕</span><div><strong>Calidad garantizada</strong><small>Siempre delicioso</small></div></div>
+    <div class="benefit"><span class="emoji">🎧</span><div><strong>Atención 24/7</strong><small>Estamos para ti</small></div></div>
+  </section>
+  <footer id="contacto"><div id="nosotros"><strong>Pizza Italia</strong> · Sabor que se comparte</div><p>Pedidos y atención: (999) 000 0000 · Mérida, Yucatán</p><small>© 2026 Pizza Italia. Página demostrativa para proyecto escolar.</small></footer>
+  <div class="notice" id="notice">Producto agregado al carrito</div>
+
+  <script>
+    const cart = {};
+    const money = n => '$' + n.toLocaleString('es-MX') + ' MXN';
+    const cartItems = document.getElementById('cartItems');
+    const subtotal = document.getElementById('subtotal');
+    const cartCount = document.getElementById('cartCount');
+    const notice = document.getElementById('notice');
+    let noticeTimer;
+
+    document.querySelectorAll('.add').forEach(button => {
+      button.addEventListener('click', () => {
+        const card = button.closest('.product');
+        const name = card.dataset.name;
+        if (!cart[name]) cart[name] = {price:Number(card.dataset.price), image:card.dataset.image, qty:0};
+        cart[name].qty++;
+        renderCart();
+        notice.classList.add('show');
+        clearTimeout(noticeTimer);
+        noticeTimer = setTimeout(() => notice.classList.remove('show'), 1300);
+      });
+    });
+
+    function changeQty(name, amount) {
+      if (!cart[name]) return;
+      cart[name].qty += amount;
+      if (cart[name].qty <= 0) delete cart[name];
+      renderCart();
+    }
+
+    function renderCart() {
+      const entries = Object.entries(cart);
+      const count = entries.reduce((sum,[,item]) => sum + item.qty, 0);
+      const total = entries.reduce((sum,[,item]) => sum + item.price * item.qty, 0);
+      cartCount.textContent = count;
+      subtotal.textContent = money(total);
+      if (!entries.length) {
+        cartItems.innerHTML = '<div class="empty">Tu carrito está vacío.</div>';
+        return;
+      }
+      cartItems.innerHTML = entries.map(([name,item]) => `
+        <div class="cart-row">
+          <img src="${item.image}" alt="">
+          <div><strong>${name}</strong><small>${money(item.price)}</small>
+            <div class="quantity">
+              <button aria-label="Quitar uno" onclick="changeQty('${name}',-1)">−</button>
+              <span>${item.qty}</span>
+              <button aria-label="Agregar uno" onclick="changeQty('${name}',1)">+</button>
+              <button class="remove" aria-label="Eliminar producto" onclick="changeQty('${name}',-${item.qty})">▢</button>
+            </div>
+          </div>
+        </div>`).join('');
+    }
+
+    document.querySelectorAll('.filter').forEach(button => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('.filter').forEach(b => b.classList.remove('active'));
+        button.classList.add('active');
+        const filter = button.dataset.filter;
+        document.querySelectorAll('.product').forEach(card => {
+          card.style.display = filter === 'Todas' || card.dataset.category === filter ? 'flex' : 'none';
+        });
+      });
+    });
+
+    document.getElementById('checkout').addEventListener('click', () => {
+      const entries = Object.entries(cart);
+      if (!entries.length) {
+        alert('Agrega al menos un producto antes de finalizar tu compra.');
+        return;
+      }
+      const total = entries.reduce((sum,[,item]) => sum + item.price * item.qty, 0);
+      const summary = entries.map(([name,item]) => `${item.qty} x ${name}`).join('\\n');
+      alert('¡Gracias por tu pedido!\\n\\n' + summary + '\\n\\nTotal: ' + money(total) + '\\n\\nEsta es una demostración escolar; no procesa pagos reales.');
+    });
+  </script>
+</body>
+</html>
